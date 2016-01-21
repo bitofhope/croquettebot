@@ -1,0 +1,9 @@
+#!/bin/sh
+source ./.aosbuild
+
+aos_compiler ${CC:-clang}
+aos_cflags -march=native -std=c11 -Os -pipe -Wall -Wextra -Werror -pedantic
+aos_bin croquettebot
+aos_src src/*.c
+
+aos_main $@
