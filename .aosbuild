@@ -25,7 +25,7 @@ then
 fi
 
 # red message
-function aos_rmsg()
+aos_rmsg()
 {
 	printf "%s[%s] %s%s\n" "$([ -n "$hascolor" ] && tput setaf 1)" \
                            "${1}" \
@@ -34,7 +34,7 @@ function aos_rmsg()
 }
 
 # green message
-function aos_gmsg()
+aos_gmsg()
 {
 	printf "%s[%s] %s%s\n" "$([ -n "$hascolor" ] && tput setaf 2)" \
                            "${1}" \
@@ -43,7 +43,7 @@ function aos_gmsg()
 }
 
 # set compiler flags
-function aos_cflags()
+aos_cflags()
 {
 	for f in "$@"
 	do
@@ -52,7 +52,7 @@ function aos_cflags()
 }
 
 # set linker flags
-function aos_lflags()
+aos_lflags()
 {
 	for f in "$@"
 	do
@@ -61,7 +61,7 @@ function aos_lflags()
 }
 
 # add packages
-function aos_pkg()
+aos_pkg()
 {
 	for pkg in "$@"
 	do
@@ -74,7 +74,7 @@ function aos_pkg()
 }
 
 # set compiler
-function aos_compiler()
+aos_compiler()
 {
 	! which "$1" >/dev/null &&
 	aos_rmsg "AOS" "Compiler \"$1\" not found" &&
@@ -84,7 +84,7 @@ function aos_compiler()
 }
 
 # set linker
-function aos_linker()
+aos_linker()
 {
 	! which "$1" >/dev/null &&
 	aos_rmsg "AOS" "Linker \"$1\" not found" &&
@@ -93,7 +93,7 @@ function aos_linker()
 }
 
 # set pkgconfig
-function aos_pkgconfig()
+aos_pkgconfig()
 {
 	! which "$1" >/dev/null &&
 	aos_rmsg "AOS" "pkg-config \"$1\" not found" &&
@@ -103,13 +103,13 @@ function aos_pkgconfig()
 }
 
 # set resulting binary
-function aos_bin()
+aos_bin()
 {
 	BIN="$1"
 }
 
 # add source files
-function aos_src()
+aos_src()
 {
 	[ -z $1 ] && return
 	for f in "$@"
@@ -120,7 +120,7 @@ function aos_src()
 }
 
 # check if compilation is needed
-function aos_objchk()
+aos_objchk()
 {
 	[ -n "$FORCE" ] && return 1
 	[ ! -e "$2" ] && return 1
@@ -129,7 +129,7 @@ function aos_objchk()
 }
 
 # check if link is needed
-function aos_binchk()
+aos_binchk()
 {
 	[ -n "$FORCE" ] && return 1
 	[ ! -e $BIN ] && return 1
@@ -138,7 +138,7 @@ function aos_binchk()
 }
 
 # compile one file
-function aos_cc()
+aos_cc()
 {
 	aos_objchk "$1" "$2" && return
 	CHANGED=0
@@ -149,7 +149,7 @@ function aos_cc()
 }
 
 # final link
-function aos_link()
+aos_link()
 {
 	aos_binchk && return
 	aos_gmsg "CC" "$BIN"
@@ -159,13 +159,13 @@ function aos_link()
 }
 
 # delete a file
-function aos_rm()
+aos_rm()
 {
 	[ -e "$1" ] && aos_gmsg "RM" "$(basename "$1")" && rm "$1"
 }
 
 # clean up
-function aos_clean()
+aos_clean()
 {
 	[ -z "$SRC" ] && aos_rmsg "AOS" "No source files" && exit 1
 	for f in "${SRCO[@]}"
@@ -177,7 +177,7 @@ function aos_clean()
 }
 
 # build everything
-function aos_build()
+aos_build()
 {
 	[ -z "$SRC" ] && aos_rmsg "AOS" "No source files" && exit 1
 	for f in "${SRC[@]}"
@@ -189,7 +189,7 @@ function aos_build()
 }
 
 # entry point
-function aos_main()
+aos_main()
 {
 	[ -z $1 ] && aos_build
 	case "$1" in
