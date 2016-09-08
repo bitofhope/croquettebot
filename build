@@ -3,11 +3,12 @@
 # Make sure we're running in the correct directory
 cd "$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
 
-source ./.aosbuild
+. ./.aosbuild
 
 aos_compiler ${CC:-clang}
 aos_cflags -march=native -std=c11 -Os -pipe -Wall -Wextra -Werror -pedantic
 aos_bin croquettebot
-aos_src src/*.c
+
+[ stat src/*.c > /dev/null 2>&1 ] && aos_src src/*.c
 
 aos_main $@
