@@ -9,6 +9,6 @@ aos_compiler ${CC:-clang}
 aos_cflags -march=native -std=c11 -Os -pipe -Wall -Wextra -Werror -pedantic
 aos_bin croquettebot
 
-[ stat src/*.c > /dev/null 2>&1 ] && aos_src src/*.c
+[ ls src/*.c > /dev/null 2>&1 ] && aos_src src/*.c
 
 aos_main $@
