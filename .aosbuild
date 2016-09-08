@@ -28,18 +28,18 @@ fi
 aos_rmsg()
 {
 	printf "%s[%s] %s%s\n" "$([ -n "$hascolor" ] && tput setaf 1)" \
-                           "${1}" \
-					       "$(tput sgr0)" \
-					       "${2}"
+	                       "${1}" \
+	                       "$(tput sgr0)" \
+	                       "${2}"
 }
 
 # green message
 aos_gmsg()
 {
 	printf "%s[%s] %s%s\n" "$([ -n "$hascolor" ] && tput setaf 2)" \
-                           "${1}" \
-					       "$(tput sgr0)" \
-					       "${2}"
+	                       "${1}" \
+	                       "$(tput sgr0)" \
+	                       "${2}"
 }
 
 # set compiler flags
