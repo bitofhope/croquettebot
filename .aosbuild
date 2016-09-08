@@ -19,16 +19,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+if [ $(tput colors 2>/dev/null) -ge 8 ]
+then
+	hascolor=true
+fi
+
 # red message
 function aos_rmsg()
 {
-	echo -e "\e[1;31m[${1}] \e[0m${2}"
+	printf "%s[%s] %s%s\n" "$([ -n "$hascolor" ] && tput setaf 1)" \
+                           "${1}" \
+					       "$(tput sgr0)" \
+					       "${2}"
 }
 
 # green message
 function aos_gmsg()
 {
-	echo -e "\e[1;32m[${1}] \e[0m${2}"
+	printf "%s[%s] %s%s\n" "$([ -n "$hascolor" ] && tput setaf 2)" \
+                           "${1}" \
+					       "$(tput sgr0)" \
+					       "${2}"
 }
 
 # set compiler flags
