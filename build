@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# Make sure we're running in the correct directory
+cd "$(cd -P -- "$(dirname -- "$0")" && pwd -P)"
+
 source ./.aosbuild
 
 aos_compiler ${CC:-clang}
