@@ -19,9 +19,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# some needed options
-shopt -s nullglob
-
 # red message
 function aos_rmsg()
 {
