@@ -45,19 +45,13 @@ aos_gmsg()
 # set compiler flags
 aos_cflags()
 {
-	for f in "$@"
-	do
-		CFLAGS=( "${CFLAGS[@]}" "$f" )
-	done
+	CFLAGS="$CFLAGS $*"
 }
 
 # set linker flags
 aos_lflags()
 {
-	for f in "$@"
-	do
-		LFLAGS=( "${LFLAGS[@]}" "$f" )
-	done
+	LFLAGS="$LFLAGS $*"
 }
 
 # add packages
@@ -112,10 +106,11 @@ aos_bin()
 aos_src()
 {
 	[ -z $1 ] && return
+	SRC="$SRC $*"
 	for f in "$@"
 	do
-		SRC=( "${SRC[@]}" "${f}" )
-		SRCO=( "${SRCO[@]}" "${f%%.c}.o" )
+		nextsrc0="$(printf "%s" "$f" | sed 's/\.c$/.o')"
+		SRC0="$SRC0 $nextsrc0"
 	done
 }
 
@@ -124,6 +119,8 @@ aos_objchk()
 {
 	[ -n "$FORCE" ] && return 1
 	[ ! -e "$2" ] && return 1
+	# If we don't have stat, just rebuild every time.
+	! which stat >/dev/null && return 1
 	[ $(stat -c %Y "$1") -le $(stat -c %Y "$2") ] && return 0
 	return 1
 }
@@ -143,7 +140,7 @@ aos_cc()
 	aos_objchk "$1" "$2" && return
 	CHANGED=0
 	aos_gmsg "CC" "$(basename "$1") -> $(basename "$2")"
-	$CC ${CFLAGS[@]} -c -o "$2" "$1" && return
+	$CC ${CFLAGS} -c -o "$2" "$1" && return
 	aos_rmsg "AOS" "Errors occured when building"
 	exit 1
 }
@@ -153,7 +150,7 @@ aos_link()
 {
 	aos_binchk && return
 	aos_gmsg "CC" "$BIN"
-	$CC -o "$BIN" ${SRCO[@]} ${LFLAGS[@]} && return
+	$CC -o "$BIN" ${SRCO} ${LFLAGS} && return
 	aos_rmsg "AOS" "Errors occured when linking"
 	exit 1
 }
@@ -168,7 +165,7 @@ aos_rm()
 aos_clean()
 {
 	[ -z "$SRC" ] && aos_rmsg "AOS" "No source files" && exit 1
-	for f in "${SRCO[@]}"
+	for f in ${SRCO}
 	do
 		aos_rm "$f"
 	done
@@ -180,9 +177,10 @@ aos_clean()
 aos_build()
 {
 	[ -z "$SRC" ] && aos_rmsg "AOS" "No source files" && exit 1
-	for f in "${SRC[@]}"
+	for f in ${SRC}
 	do
-		aos_cc "$f" "${f%%.c}.o"
+		obj="$(printf "%s" "$f" | sed 's/\.c$/.o')"
+		aos_cc "$f" "${obj}"
 	done
 	aos_link
 	exit 0
